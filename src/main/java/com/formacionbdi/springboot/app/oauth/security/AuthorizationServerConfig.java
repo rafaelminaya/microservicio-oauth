@@ -1,6 +1,7 @@
 package com.formacionbdi.springboot.app.oauth.security;
 
 import java.util.Arrays;
+import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -142,8 +143,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		
 		JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
 	
-		// Asignamos el "codigo secreto" para la firma del JWT.
-		accessTokenConverter.setSigningKey(this.environment.getProperty("config.security.oauth.jwt.key"));
+		// Asignamos el "codigo secreto" para la firma del JWT y lo codificamos a "Base64"
+		accessTokenConverter.setSigningKey(Base64.getEncoder().encodeToString(this.environment.getProperty("config.security.oauth.jwt.key").getBytes()));
 		return accessTokenConverter;
 		
 	}		
